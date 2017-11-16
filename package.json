@@ -1,0 +1,25 @@
+{
+  "name": "photostoryserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node service/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.4.1",
+    "koa-bodyparser": "^4.2.0",
+    "koa-cors": "^0.0.16",
+    "koa-logger": "^3.1.0",
+    "koa-router": "^7.3.0",
+    "koa-static": "^4.0.1",
+    "mysql2": "^1.5.0",
+    "sequelize": "^4.22.6"
+  },
+  "devDependencies": {
+    "koa-webpack-middleware": "^1.0.7",
+    "webpack": "^3.8.1"
+  }
+}
