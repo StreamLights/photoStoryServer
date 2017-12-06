@@ -40,8 +40,16 @@ export var getArticleList = async (ctx) => {
         .skip(page * 3)
         .limit(3)
         .sort({ '_id': -1 });
+    if (articles.length === 0) {
+        ctx.body = {
+            status: 2,
+            content: [],
+            meg: '已经没有内容啦'
+        }
+        return;
+    }
     ctx.body = {
         status: 0,
         content: articles
-    }    
+    }
 }

@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema;
 const headImgSchema = new Schema({
-    author: {
+    username: {
         type: String,
         require: true
     },
