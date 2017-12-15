@@ -1,11 +1,26 @@
 import { UserInfo } from '../model/user/userinfo.js'
 import { HeadImg } from '../model/user/headimg.js'
-
-export var checkLogin = async (ctx) => {
-    let user = ctx.session.user;;
+// mongodb查询的字段为空时，会报错
+// 当mongodb未查询到数据时，不会返回空数组，而是null
+// 用户否登陆鉴权
+export var identifyLogin = async (ctx, next) => {
+    let user = ctx.session.user;
     if (user) {
+       await next();
+    } else {
+       ctx.body = {
+            status: 1,
+            msg: '用户未登陆'
+       }
+    }
+}
+// 检查用户是否登陆
+export var checkLogin = async (ctx, next) => {
+    let user = ctx.session.user;
+    if(user) {
         ctx.body = {
-            status: 0
+            status: 0,
+            msg: '用户已登陆'
         }
     } else {
         ctx.body = {
@@ -14,6 +29,7 @@ export var checkLogin = async (ctx) => {
         }
     }
 }
+// 用户登陆
 export var login = async (ctx) => {
     let username = ctx.request.body.username;
     let password = ctx.request.body.password;
@@ -40,13 +56,10 @@ export var login = async (ctx) => {
         }
     }
 }
+// 用户注册
 export var register = async (ctx) => {
     let username = ctx.request.body.username;
     let password = ctx.request.body.password;
-    let userInfo = new UserInfo({
-        username: username,
-        password: password
-    });
     let user = await UserInfo.findOne({
         username
     });
@@ -57,6 +70,10 @@ export var register = async (ctx) => {
         }
         return;
     }
+    let userInfo = new UserInfo({
+        username: username,
+        password: password
+    });
     userInfo.save()
         .then((result) => {
             console.log('user: ' + result.username + '  insert Success !');
@@ -73,14 +90,20 @@ export var register = async (ctx) => {
         msg: '注册成功'
     }
 }
+// 用户登出
 export var logout = async (ctx) => {
     ctx.session = null;
+    ctx.body = {
+        status: 0,
+        msg: '用户登出成功'
+    }
 }
+// 用户页面获取用户信息
 export var getUserInfo = async (ctx) => {
     let username = ctx.session.user;
     let user = await UserInfo.findOne({
         username
-    });
+    }); 
     let userHead = await HeadImg.findOne({
         username
     });
