@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var hostStr = 'mail.huawei.com|huawei.com.ss|teltalk.org.op|google.com.hk|imail.huawei.com';
+        // 用于改变hostStr的格式
+        function changeList(hostStr) {
+            var hostArr = hostStr.split('|');
+            var hostList = []; // 里面存储了域名列表
+            for (var i = 0; i < hostArr.length; i++) {
+                var hostObj = [];
+                var host = hostArr[i].split('.');   // host为数组
+                for (var j = 0; j < host.length; j++) {
+                    hostObj[j] = host[j];
+                }
+                hostList.push(hostObj);
+            }
+            return hostList;
+        }
+
+        function hostSort(hostStr, count) {
+            var hostArr = changeList(hostStr);
+            var hostArrString = [];
+            for (var i = 0; i < hostArr.length; i++) {
+                var len = hostArr[i].length;
+                var temp = hostArr[i][len - count];             // 暂时存入每一级的域名  count 表示 参与比较置顶的那级域名下标
+                hostArr[i].unshift(temp);
+                var tempString = hostArr[i].toString();
+                hostArrString.push(tempString);
+            }
+            count++;
+            hostArrString = hostArrString.sort();
+            var hostArrStringTwo = [];
+            for (var j = 0; j < hostArrString.length; j++) {
+                var arrTemp = hostArrString[j].split(',');
+                hostArrStringTwo.push(arrTemp);
+            }
+            for(var k=0; k<hostArrStringTwo.length; k++) {
+                hostArrStringTwo[k].shift();
+            }
+            var hostArrStringThree = '';
+            for(var z=0; z<hostArrStringTwo.length; z++) {
+                var temp2 = hostArrStringTwo[z].join('.');
+                hostArrStringThree = hostArrStringThree + temp2 + '|';
+            }
+            hostArrStringThree = hostArrStringThree.toString().slice(0, -1);
+            console.log(hostArrStringThree);
+        }
+        hostSort(hostStr, 1);
+    </script>
+</body>
+
+</html>

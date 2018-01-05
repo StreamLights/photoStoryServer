@@ -123,26 +123,5 @@ export var getUserInfo = async (ctx) => {
     }
 }
 export var postHeadImg = async (ctx) => {
-    let username = ctx.session.user;
-    let image = ctx.request.body.headImg;
-    let headImg = new HeadImg({
-        username: username,
-        img: image
-    });
-    if (username) {
-        headImg.save()
-            .then(function (result) {
-                console.log(username + ':   头像存储成功!');
-            })
-            .catch(function (err) {
-                ctx.body = {
-                    status: 1,
-                    msg: '图片上传失败，错误代码：' + err
-                }
-                console.log('article insered fail , resones: ' + err);
-            })
-        ctx.body = {
-            status: 0
-        }
-    }
+    console.log(ctx.req.file);
 }

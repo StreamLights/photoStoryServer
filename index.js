@@ -1,4 +1,6 @@
 import Koa from 'koa';
+import fs from 'fs'
+import path from 'path'
 import cors from 'koa-cors';
 import bodyParser from 'koa-bodyparser'
 import logger from 'koa-logger'
@@ -32,6 +34,11 @@ app.use(session(CONFIG, app));
 // 连接mongodb
 mongoose.connect('mongodb://localhost:27017/warm-cat');
 mongoose.connection.on('error', console.error);
+
+// 监听uploads/文件
+fs.watch(__dirname+'/uploads', {interval: 20}, function(change, filename) {
+    console.log(filename);
+});
 
 app
     .use(route.routes())

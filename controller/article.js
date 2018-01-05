@@ -36,7 +36,7 @@ export var postArticle = async (ctx) => {
 export var getArticleList = async (ctx) => {
     let user = ctx.session.user;
     let page = ctx.request.body.page;
-    var articles = await Article.find({})
+    let articles = await Article.find({})
         .skip(page * 3)
         .limit(3)
         .sort({ '_id': -1 });
@@ -51,5 +51,23 @@ export var getArticleList = async (ctx) => {
     ctx.body = {
         status: 0,
         content: articles
+    }
+}
+
+export var getArticleDetail = async (ctx) => {
+    let articleId = ctx.request.query.id;
+    let articleDetail = await Article.findOne({
+        _id: articleId
+    });
+    if(!articleDetail) {
+        ctx.body = {
+            msg: '抱歉，文章已删除',
+            status: 1
+        }
+        return;
+    }
+    ctx.body = {
+        articleDetail: articleDetail,
+        status: 0
     }
 }
